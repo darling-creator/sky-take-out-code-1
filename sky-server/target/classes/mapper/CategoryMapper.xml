@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.CategoryMapper">
+	<resultMap id="CategoryResultMapper" type="com.sky.entity.Category">
+		<id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="sort" property="sort"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_user" property="updateUser"/>
+	</resultMap>
+	
+	<!--新增-->
+    <insert id="insert">
+        insert into category(type,name,sort,status,create_time,update_time,create_user,update_user)
+        values(#{type},#{name},#{sort},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+
+    <!--修改-->
+    <update id="update">
+        update category
+        set type=#{type},
+            name=#{name},
+            sort=#{sort},
+            status=#{status},
+            update_time=#{updateTime},
+            update_user=#{updateUser}
+        where id=#{id}
+    </update>
+
+    <!--根据id删除-->
+    <delete id="deleteById">
+        delete from category where id = #{id}
+    </delete>
+
+    <!--按类型查询列表-->
+    <select id="listByType" resultMap="CategoryResultMap">
+        select * from category
+        where type = #{type} and status = 1
+        order by sort asc
+    </select>
+
+    <!--根据id查询-->
+    <select id="getById" resultMap="CategoryResultMap">
+        select * from category where id = #{id}
+    </select>
+</mapper>
