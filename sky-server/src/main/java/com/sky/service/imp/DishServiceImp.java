@@ -1,6 +1,7 @@
 package com.sky.service.imp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +97,32 @@ public class DishServiceImp implements DishService {
         dish.setStatus(status);
         dish.setUpdateTime(LocalDateTime.now());
         dishMapper.update(dish);
+	}
+	
+	//根据分类id查询菜品，携带口味
+	@Override
+	public List<Dish> listWithFlavor(Long categoryId) {
+		//只查询启用 status=1
+        List<Dish> dishList = dishMapper.listByCategoryIdAndStatus(categoryId,1);
+        List<Dish> voList = new ArrayList<>();
+
+        for(Dish dish : dishList){
+            Dish dish1 = new Dish();
+            dish1.setId(dish.getId());
+            dish1.setName(dish.getName());
+            dish1.setCategoryId(dish.getCategoryId());
+            dish1.setPrice(dish.getPrice());
+            dish1.setImage(dish.getImage());
+            dish1.setDescription(dish.getDescription());
+            dish1.setStatus(dish.getStatus());
+
+            //查询该菜品对应的口味
+            List<DishFlavor> flavorList = dishFlavorMapper.getByDishId(dish.getId());
+            dish1.setFlavors(flavorList);
+
+            voList.add(dish1);
+        }
+        return voList;
 	}
 	
 	

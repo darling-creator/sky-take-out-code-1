@@ -19,14 +19,16 @@ public class EmployeeServiceImp implements EmployeeService {
 	public Map<String, Object> login(String username, String password) {
 		//根据用户名查询数据库
         Employee emp = employeeMapper.getByUsername(username);
+        
         //用户不存在
-        if (emp == null) {
+        if ( emp == null ) {
             return null;
         }
         //密码比对
         if ( !emp.getPassword().equals(password) ) {
             return null;
         }
+        
         //登录成功，封装返回数据
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("id", emp.getId());

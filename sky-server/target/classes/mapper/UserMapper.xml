@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.UserMapper">
+	<resultMap id="UserResultMap" type="com.sky.entity.User">
+        <id column="id" property="id"/>
+        <result column="openid" property="openid"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="id_number" property="idNumber"/>
+        <result column="avatar" property="avatar"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+	<!-- 根据openid查询用户 -->
+    <select id="getByOpenid" resultMap="UserResultMap">
+        select id,openid,name,phone,sex,id_number,avatar,create_time
+        from sky_user
+        where openid = #{openid}
+    </select>
+
+    <!-- 新增用户  -->
+    <insert id="insert">
+        insert into sky_user(id,openid,name,phone,sex,id_number,avatar,create_time)
+        values(seq_sky_user.nextval,#{openid},#{name},#{phone},#{sex},#{idNumber},#{avatar},#{createTime})
+    </insert>
+</mapper>

@@ -30,4 +30,7 @@ public interface DishMapper {
 
     //根据id删除菜品
     public void deleteById(Long id);
+    
+    //根据分类id和状态查询菜品
+    public List<Dish> listByCategoryIdAndStatus(Long categoryId, Integer status);
 }

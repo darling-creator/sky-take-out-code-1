@@ -1,5 +1,7 @@
 package com.sky.service;
 
+import java.util.List;
+
 import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 
@@ -10,7 +12,7 @@ public interface DishService {
     //新增菜品，附带口味
     public void saveWithFlavor(Dish dish);
 
-    //根据id查询菜品和口味（编辑回显）
+    //根据id查询菜品和口味
     public Dish getByIdWithFlavor(Long id);
 
     //修改菜品和口味
@@ -21,4 +23,7 @@ public interface DishService {
 
     //菜品起售停售
     public void updateStatus(Long id, Integer status);
+    
+    //根据分类id查询菜品，携带口味
+    public List<Dish> listWithFlavor(Long categoryId);
 }

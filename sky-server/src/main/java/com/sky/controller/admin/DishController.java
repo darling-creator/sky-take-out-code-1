@@ -1,5 +1,7 @@
 package com.sky.controller.admin;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,5 +70,12 @@ public class DishController {
     public Result updateStatus(Long id,Integer status){
         dishService.updateStatus(id, status);
         return Result.success();
+    }
+    
+    //根据分类id和状态查询菜品
+    @GetMapping("/list")
+    public Result<List<Dish>> list(Long categoryId){
+        List<Dish> list = dishService.listWithFlavor(categoryId);
+        return Result.success(list);
     }
 }
