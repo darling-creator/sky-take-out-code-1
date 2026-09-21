@@ -26,4 +26,10 @@ public interface DishService {
     
     //根据分类id查询菜品，携带口味
     public List<Dish> listWithFlavor(Long categoryId);
+    
+    //查询缓存的商品
+    public List<Dish> getDishByCategoryId(Long categoryId);
+    
+    //清楚缓存
+    public void cleanDish(Long categoryId);
 }

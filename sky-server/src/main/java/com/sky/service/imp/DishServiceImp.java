@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.sky.entity.Dish;
@@ -20,6 +21,9 @@ public class DishServiceImp implements DishService {
     private DishMapper dishMapper;
 	@Autowired
     private DishFlavorMapper dishFlavorMapper;
+	@SuppressWarnings("rawtypes")
+	@Autowired
+    private RedisTemplate redisTemplate;
 	
 	//查询的分页代码
 	@Override
@@ -123,6 +127,40 @@ public class DishServiceImp implements DishService {
             voList.add(dish1);
         }
         return voList;
+	}
+	
+	//查询缓存的商品
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Dish> getDishByCategoryId(Long categoryId) {
+		//定义rediskey
+		String key = "dish_" + categoryId;
+		
+		//先从Redis获取数据
+		List<Dish> dishList = (List<Dish>) redisTemplate.opsForValue().get(key);
+		
+		//判断缓存是否存在
+		if( dishList != null ) {
+			return dishList;
+		}
+		
+		//缓存不存在，则查询数据库
+		Integer status = 1;
+		dishList = dishMapper.listByCategoryIdAndStatus(categoryId,status);
+		
+		//将查到的数据存入Redis
+		redisTemplate.opsForValue().set(key,dishList);
+		
+ 		return dishList;
+	}
+	
+	//清楚缓存
+	@SuppressWarnings("unchecked")
+	@Override
+	public void cleanDish(Long categoryId) {
+		//定义rediskey
+		String key = "dish_" + categoryId;
+		redisTemplate.delete(key);
 	}
 	
 	

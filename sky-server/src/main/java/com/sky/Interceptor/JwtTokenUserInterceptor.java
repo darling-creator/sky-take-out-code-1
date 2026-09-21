@@ -38,7 +38,7 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
         return true;
     }
     
-    //请求全部完成之后，清理ThreadLocal，防止内存泄漏
+    //请求全部完成之后，清理ThreadLocal
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         BaseContext.removeCurrentId();

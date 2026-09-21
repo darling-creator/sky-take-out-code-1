@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sky.entity.Dish;
@@ -77,5 +78,12 @@ public class DishController {
     public Result<List<Dish>> list(Long categoryId){
         List<Dish> list = dishService.listWithFlavor(categoryId);
         return Result.success(list);
+    }
+    
+    //查询商品缓存
+    @GetMapping
+    public Result<List<Dish>> list2(@RequestParam Long categoryId){
+    	List<Dish> list = dishService.getDishByCategoryId(categoryId);
+    	return Result.success(list);
     }
 }
