@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.ShoppingCartMapper">
+	<resultMap id="ShoppingCartResultMap" type="com.sky.entity.ShoppingCart">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="user_id" property="userId"/>
+        <result column="dish_id" property="dishId"/>
+        <result column="setmeal_id" property="setmealId"/>
+        <result column="dish_flavor" property="dishFlavor"/>
+        <result column="number" property="number"/>
+        <result column="amount" property="amount"/>
+        <result column="image" property="image"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+	<!-- 新增购物车记录 -->
+	<insert id="insert">
+        insert into shopping_cart(id,name,user_id,dish_id,setmeal_id,dish_flavor,number,amount,image,create_time)
+        values(seq_shopping_cart.nextval,#{name},#{userId},#{dishId},#{setmealId},#{dishFlavor},#{number},#{amount},#{image},#{createTime})
+    </insert>
+    
+    <!-- 修改购物车数量 -->
+    <update id="update">
+        update shopping_cart set number = #{number} where id=#{id}
+    </update>
+    
+    <!-- 删除单条购物车 -->
+    <delete id="deleteById">
+        delete from shopping_cart where id = #{id}
+    </delete>
+    
+    <!-- 清空用户购物车 -->
+    <delete id="deleteByUserId">
+        delete from shopping_cart where user_id = #{userId}
+    </delete>
+    
+    <!-- 查询该用户全部购物车 -->
+    <select id="listByUserId" resultMap="ShoppingCartResultMap">
+        select id,name,user_id,dish_id,setmeal_id,dish_flavor,number,amount,image,create_time
+        from shopping_cart
+        where user_id = #{userId}
+    </select>
+    
+    <!-- 根据用户id、菜品id、套餐id、口味查询购物车记录 -->
+    <select id="getByIdAndFlavor" resultMap="ShoppingCartResultMap">
+        select id,name,user_id,dish_id,setmeal_id,dish_flavor,number,amount,image,create_time
+        from shopping_cart
+        where user_id = #{userId}
+        <if test="dishId != null">
+            and dish_id = #{dishId}
+        </if>
+        <if test="setmealId != null">
+            and setmeal_id = #{setmealId}
+        </if>
+        <if test="dishFlavor != null">
+            and dish_flavor = #{dishFlavor}
+        </if>
+    </select>
+</mapper>
