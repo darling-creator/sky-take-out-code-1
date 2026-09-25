@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mappper.AddressBookMapper">
+	<resultMap type="com.sky.entity.AddressBook" id="AddressBookResultMap">
+		<id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="consignee" property="consignee"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="province_code" property="provinceCode"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="city_code" property="cityCode"/>
+        <result column="city_name" property="cityName"/>
+        <result column="district_code" property="districtCode"/>
+        <result column="district_name" property="districtName"/>
+        <result column="detail" property="detail"/>
+        <result column="label" property="label"/>
+        <result column="is_default" property="isDefault"/>
+	</resultMap>
+	
+	<!-- 新增收货地址 -->
+	<insert id="insert">
+		insert into address_book (
+			user_id,consignee,phone,sex,
+            province_code,province_name,city_code,city_name,
+            district_code,district_name,detail,label,is_default
+		) values (
+			#{userId},#{consignee},#{phone},#{sex},
+            #{provinceCode},#{provinceName},#{cityCode},#{cityName},
+            #{districtCode},#{districtName},#{detail},#{label},#{isDefault}
+		)
+	</insert>
+	
+	<!-- 修改收货地址 -->
+	<update id="update">
+		update address_book set 
+			consignee = #{consignee},
+            phone = #{phone},
+            sex = #{sex},
+            province_code = #{provinceCode},
+            province_name = #{provinceName},
+            city_code = #{cityCode},
+            city_name = #{cityName},
+            district_code = #{districtCode},
+            district_name = #{districtName},
+            detail = #{detail},
+            label = #{label},
+            is_default = #{isDefault}
+        where id = #{id}
+	</update>
+	
+	<!-- 根据id删除地址 -->
+	<delete id="delete">
+		delete from address_book where id = #{id}
+	</delete>
+	
+	<!-- 根据用户id查询该用户下所有地址 -->
+	<select id="queryAllAddressByUserId" resultMap="AddressBookResultMap">
+        select * from address_book where user_id = #{userId}
+    </select>
+    
+    <!-- 查询用户的默认地址 -->
+    <select id="queryDefaultAddress">
+    	select * from address_book where user_id=#{userId} and is_default=1
+    </select>
+    
+    <!-- 修改用户所有地址为非默认 -->
+    <update id="cancelDefaultAddress">
+    	update address_book set is_default=0 where user_id = #{userId}
+    </update>
+</mapper>
