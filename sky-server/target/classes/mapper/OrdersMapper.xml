@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.mapper.OrdersMapper">
+	<resultMap id="OrdersResultMap" type="com.sky.entity.Orders">
+        <id column="id" property="id"/>
+        <result column="number" property="number"/>
+        <result column="status" property="status"/>
+        <result column="user_id" property="userId"/>
+        <result column="address_book_id" property="addressBookId"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="checkout_time" property="checkoutTime"/>
+        <result column="pay_method" property="payMethod"/>
+        <result column="pay_status" property="payStatus"/>
+        <result column="amount" property="amount"/>
+        <result column="remark" property="remark"/>
+        <result column="user_name" property="userName"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="consignee" property="consignee"/>
+        <result column="cancel_reason" property="cancelReason"/>
+        <result column="rejection_reason" property="rejectionReason"/>
+        <result column="cancel_time" property="cancelTime"/>
+        <result column="estimated_delivery_time" property="estimatedDeliveryTime"/>
+        <result column="delivery_status" property="deliveryStatus"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="pack_amount" property="packAmount"/>
+        <result column="tableware_number" property="tablewareNumber"/>
+        <result column="tableware_status" property="tablewareStatus"/>
+    </resultMap>
+    
+    <!-- 添加订单 -->
+	<insert id="insertOrders">
+		INSERT INTO orders (
+            id,number,status,user_id,address_book_id,order_time,checkout_time,
+            pay_method,pay_status,amount,remark,user_name,phone,address,consignee,
+            cancel_reason,rejection_reason,cancel_time,estimated_delivery_time,
+            delivery_status,delivery_time,pack_amount,tableware_number,tableware_status
+        ) VALUES (
+            seq_orders.nextval,#{number},#{status},#{userId},#{addressBookId},#{orderTime},#{checkoutTime},
+            #{payMethod},#{payStatus},#{amount},#{remark},#{userName},#{phone},#{address},#{consignee},
+            #{cancelReason},#{rejectionReason},#{cancelTime},#{estimatedDeliveryTime},
+            #{deliveryStatus},#{deliveryTime},#{packAmount},#{tablewareNumber},#{tablewareStatus}
+        )
+	</insert>
+	
+	<!-- 修改订单 -->
+    <update id="updateOrders" parameterType="com.sky.entity.Orders">
+        UPDATE orders
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
+            <if test="checkoutTime != null">checkout_time = #{checkoutTime},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="rejectionReason != null">rejection_reason = #{rejectionReason},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据订单id查询订单 -->
+    <select id="queryById" resultMap="OrdersResultMap">
+        SELECT * FROM orders WHERE id = #{id}
+    </select>
+
+    <!-- 根据用户id查询该用户所有订单 -->
+    <select id="queryAllOrdersByUserId" resultMap="OrdersResultMap">
+        SELECT * FROM orders WHERE user_id = #{userId}
+    </select>
+
+    <!-- 根据订单号查询订单 -->
+    <select id="queryOrdersByNumber" resultMap="OrdersResultMap">
+        SELECT * FROM orders WHERE number = #{number}
+    </select>
+</mapper>

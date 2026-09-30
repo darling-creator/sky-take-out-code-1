@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<<mapper namespace="com.sky.mapper.OrderDetailMapper">
+	<resultMap id="OrderDetailResultMap" type="com.sky.entity.OrderDetail">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="order_id" property="orderId"/>
+        <result column="dish_id" property="dishId"/>
+        <result column="setmeal_id" property="setmealId"/>
+        <result column="dish_flavor" property="dishFlavor"/>
+        <result column="number" property="number"/>
+        <result column="amount" property="amount"/>
+        <result column="image" property="image"/>
+    </resultMap>
+
+    <!-- 批量插入订单明细  -->
+    <insert id="insertBatch">
+        INSERT ALL
+        <foreach collection="list" item="item">
+            INTO order_detail(
+                id,name,order_id,dish_id,setmeal_id,dish_flavor,number,amount,image
+            ) VALUES (
+                seq_order_detail.nextval,
+                #{item.name},
+                #{item.orderId},
+                #{item.dishId},
+                #{item.setmealId},
+                #{item.dishFlavor},
+                #{item.number},
+                #{item.amount},
+                #{item.image}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据订单id查询明细 -->
+    <select id="queryDetailById" resultMap="OrderDetailResultMap">
+        SELECT * FROM order_detail WHERE order_id = #{orderId}
+    </select>
+</mapper>
