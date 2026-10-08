@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sky.context.BaseContext;
@@ -49,5 +50,12 @@ public class OrdersController {
     public Result<String> cancel(@PathVariable Long id){
         ordersService.cancelOrder(id);
         return Result.success("订单取消成功");
+    }
+	
+	//用户成功下单
+	@PutMapping("/paySuccess")
+    public Result<String> paySuccess(@RequestParam String number){
+        ordersService.payOrder(number);
+        return Result.success("支付成功");
     }
 }

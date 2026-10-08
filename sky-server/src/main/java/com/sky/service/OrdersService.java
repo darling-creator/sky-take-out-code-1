@@ -17,5 +17,6 @@ public interface OrdersService {
 	public Orders getOrdersByNumber(String number);
 	//用户取消订单
 	public void cancelOrder(Long orderId);
-	//
+	//支付成功方法
+	public void payOrder(String number);
 }
