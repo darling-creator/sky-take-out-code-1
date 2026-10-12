@@ -73,4 +73,9 @@
     <select id="queryOrdersByNumber" resultMap="OrdersResultMap">
         SELECT * FROM orders WHERE number = #{number}
     </select>
+    
+    <!-- 查找订单状态为未支付而且已经等待超过15分钟没有付钱 -->
+    <select id="queryStatusAndTime" resultMap="OrdersResultMap">
+    	SELECT * FROM orders WHERE status = #{status} and order_time < #{orderTime}
+    </select>
 </mapper>
