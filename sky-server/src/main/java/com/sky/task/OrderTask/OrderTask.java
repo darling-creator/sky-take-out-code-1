@@ -36,4 +36,21 @@ public class OrderTask {
         	}
         }
 	}
+	
+	//下单是0 点之前，并且还停留在派送中，而且从下单算起已经超过 1 小时的订单，才改成已完成
+	@Scheduled(cron = "* * 1 * * ?")
+	public void timeCheckTwo() {
+		//拿到60分钟之前的时间
+        LocalDateTime oneHourAgo = LocalDateTime.now().minusMinutes(60);
+        
+        //查询那些显示还在派送中的订单
+        List<Orders> list = ordersMapper.queryStatusAndTime(Orders.DELIVERY_IN_PROGRESS,oneHourAgo);
+        
+        if( list != null && list.size() > 0 ) {
+        	for( Orders order : list ) {
+        		order.setStatus(Orders.COMPLETED);
+                ordersMapper.updateOrders(order);
+        	}
+        }
+	}
 }
