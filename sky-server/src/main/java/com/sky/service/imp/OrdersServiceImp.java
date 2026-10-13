@@ -20,6 +20,7 @@ import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrdersMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.OrdersService;
+import com.sky.webSocket.WebSocketServer;
 
 @Service
 public class OrdersServiceImp implements OrdersService {
@@ -31,6 +32,8 @@ public class OrdersServiceImp implements OrdersService {
 	private ShoppingCartMapper shoppingCartMapper;
 	@Autowired
 	private AddressBookMapper addressBookMapper;
+	@Autowired
+	private WebSocketServer webSocketServer;
 	
 	//用户下单
 	@Override
@@ -66,7 +69,7 @@ public class OrdersServiceImp implements OrdersService {
         	//add()加法
         	//subtract()减法
         	//divide()除法
-        	//要求传入的参数必须是 BigDecimal类型
+        	//要求传入的参数必须是BigDecimal类型
         	BigDecimal itemTotal = cart.getAmount().multiply(new BigDecimal(cart.getNumber()));
         	totalAmount = totalAmount.add(itemTotal);
         }
@@ -99,6 +102,10 @@ public class OrdersServiceImp implements OrdersService {
         
         //下单完成，清空该用户购物车
         shoppingCartMapper.deleteByUserId(userId);
+        
+        //额外功能：来单提醒
+        String msg = "【新订单提醒】您有新订单！订单号：" + orders.getNumber();
+        webSocketServer.sentToAllOnline(msg);
 	}
 	
 	//修改订单	

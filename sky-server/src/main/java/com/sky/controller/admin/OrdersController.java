@@ -16,12 +16,15 @@ import com.sky.context.BaseContext;
 import com.sky.entity.Orders;
 import com.sky.result.Result;
 import com.sky.service.OrdersService;
+import com.sky.webSocket.WebSocketServer;
 
 @RestController
 @RequestMapping("/user/order")
 public class OrdersController {
 	@Autowired
 	private OrdersService ordersService;
+	@Autowired
+	private WebSocketServer webSocketServer;
 	
 	//用户提交订单下单
 	@PostMapping("/submit")
@@ -58,4 +61,14 @@ public class OrdersController {
         ordersService.payOrder(number);
         return Result.success("支付成功");
     }
+	
+	//用户催单
+	@SuppressWarnings("rawtypes")
+	@GetMapping("/reminder")
+	public Result reminder(@RequestParam String orderNumber) {
+		//组装消息发给商家
+        String msg = "【催单提醒】订单号："+ orderNumber + "，用户正在催单，请尽快处理！";
+        webSocketServer.sentToAllOnline(msg);
+        return Result.success("催单成功");
+	}
 }
