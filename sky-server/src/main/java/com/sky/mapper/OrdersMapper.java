@@ -20,4 +20,8 @@ public interface OrdersMapper {
 	public Orders queryOrdersByNumber(String number);
 	//查找订单状态为未支付而且已经等待超过15 分钟没有付钱
 	public List<Orders> queryStatusAndTime(@Param("status")Integer status, @Param("orderTime")LocalDateTime orderTime);
+	//根据传入的时间段来查询该时间段的营业额
+	public List<Orders> queryAmountByTimeAndStatus(@Param("beginTime")LocalDateTime beginTime
+			,@Param("endTime")LocalDateTime endTmie
+			,@Param("status")Integer status);
 }

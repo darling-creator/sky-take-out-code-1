@@ -161,4 +161,21 @@ public class OrdersServiceImp implements OrdersService {
 		ordersMapper.updateOrders(orders);
 	}
 	
+	//根据传入的时间段来查询该时间段的营业额
+	@Override
+	public BigDecimal getAmount(LocalDateTime beginTime, LocalDateTime endTime) {
+		//查询时间段的订单
+		List<Orders> list = ordersMapper.queryAmountByTimeAndStatus(beginTime,endTime,Orders.COMPLETED);
+		
+		//设置总营业额
+		BigDecimal totalAmount = new BigDecimal("0");
+		
+		for( Orders order : list ) {
+			BigDecimal amount = order.getAmount();
+			totalAmount = totalAmount.add(amount);
+		}
+		
+		return totalAmount;
+	}
+	
 }

@@ -1,5 +1,7 @@
 package com.sky.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.sky.entity.Orders;
@@ -19,4 +21,6 @@ public interface OrdersService {
 	public void cancelOrder(Long orderId);
 	//支付成功方法
 	public void payOrder(String number);
+	//统计传入时间段的营业额
+	public BigDecimal getAmount(LocalDateTime beginTime,LocalDateTime endTime);
 }

@@ -76,6 +76,11 @@
     
     <!-- 查找订单状态为未支付而且已经等待超过15分钟没有付钱 -->
     <select id="queryStatusAndTime" resultMap="OrdersResultMap">
-    	SELECT * FROM orders WHERE status = #{status} and order_time < #{orderTime}
+    	SELECT * FROM orders WHERE status = #{status} and order_time &lt; #{orderTime}
+    </select>
+    
+    <!-- 根据传入的时间段来查询该时间段的营业额 -->
+    <select id="queryAmountByTimeAndStatus" resultMap="OrdersResultMap">
+    	SELECT * FROM orders WHERE status = #{status} AND checkout_time BETWEEN #{beginTime} AND #{endTime}
     </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.sky.controller.admin;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +72,12 @@ public class OrdersController {
         String msg = "【催单提醒】订单号："+ orderNumber + "，用户正在催单，请尽快处理！";
         webSocketServer.sentToAllOnline(msg);
         return Result.success("催单成功");
+	}
+	
+	//用户查看某个时间段的营业额
+	@GetMapping("/getAmount")
+	public Result<BigDecimal> getTimeAmount(@RequestParam LocalDateTime beginTime,@RequestParam LocalDateTime endTime){
+		BigDecimal totalAmount = ordersService.getAmount(beginTime,endTime);
+		return Result.success(totalAmount);
 	}
 }
