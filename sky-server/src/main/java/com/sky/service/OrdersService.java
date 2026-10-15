@@ -23,4 +23,6 @@ public interface OrdersService {
 	public void payOrder(String number);
 	//统计传入时间段的营业额
 	public BigDecimal getAmount(LocalDateTime beginTime,LocalDateTime endTime);
+	//根据传入的时间段来统计该时间段的销售数量
+	public Integer getNumber(LocalDateTime beginTime,LocalDateTime endTime);
 }

@@ -178,4 +178,20 @@ public class OrdersServiceImp implements OrdersService {
 		return totalAmount;
 	}
 	
+	//根据传入的时间段来统计该时间段的销售数量
+	@Override
+	public Integer getNumber(LocalDateTime beginTime, LocalDateTime endTime) {
+		//查询时间段的订单
+		List<Orders> list = ordersMapper.queryAmountByTimeAndStatus(beginTime,endTime,Orders.COMPLETED);
+		
+		//定义总数
+		Integer totalNumber = 0;
+		
+		for( @SuppressWarnings("unused") Orders order : list ) {
+			totalNumber = totalNumber + 1;
+		}
+		
+		return totalNumber;
+	}
+	
 }

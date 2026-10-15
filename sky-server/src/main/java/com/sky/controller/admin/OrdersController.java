@@ -80,4 +80,10 @@ public class OrdersController {
 		BigDecimal totalAmount = ordersService.getAmount(beginTime,endTime);
 		return Result.success(totalAmount);
 	}
+	
+	//用户统计某个时间段的数量
+	public Result<Integer> getTimeNumber(@RequestParam LocalDateTime beginTime,@RequestParam LocalDateTime endTime){
+		Integer totalNumber = ordersService.getNumber(beginTime,endTime);
+		return Result.success(totalNumber);
+	}
 }
